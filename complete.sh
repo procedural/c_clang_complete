@@ -72,7 +72,7 @@ column=$((${#str_line_half} - ${#str_tail} + 1))
 clang_output=$(clang "${@}" -fcolor-diagnostics -fsyntax-only -Xclang -code-completion-macros -Xclang -code-completion-patterns -Xclang -code-completion-brief-comments -Xclang -code-completion-at="${1}":${line}:${column})
 fmt="s_#\]_#\] _1; s_\[#_${return_color}_g; s_#\]_${nil}_g; s_<#_${argument_color}_g; s_#>_${nil}_g; s_{#, _,${default_argument_color} \$_g; s_#}_${nil}_g"
 clang_output=$(echo "${clang_output}" | sed -z "s_\n__g; s_OVERLOAD: _\nOVERLOAD: _g; s_COMPLETION: _\nCOMPLETION: _g")
-complete=$(echo "${clang_output}" | sed "/^OVERLOAD: /d; /^$/d" | grep "${str_tail}")
+complete=$(echo "${clang_output}" | sed "/^OVERLOAD: /d; /^$/d" | grep "^COMPLETION: ${str_tail}")
 overload=$(echo "${clang_output}" | grep "^OVERLOAD: ")
 complete=$(echo "${complete}" | sed "${fmt}")
 overload=$(echo "${overload}" | sed "${fmt}")
