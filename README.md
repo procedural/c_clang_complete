@@ -30,7 +30,7 @@ watch -cn 0.1 "./complete.sh main.c"
 
 You should see:
 
-```
+```c
 int printf(const char *restrict __format, ...)
 ```
 
