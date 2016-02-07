@@ -1,7 +1,7 @@
 poor man's clang autocomplete
 =============================
 
-For any text editor out there. Written primarily for C language.
+For any text editor out there. For C and C++.
 
 **Basic usage**:
 
@@ -35,5 +35,7 @@ int printf(const char *restrict __format, ...)
 That's it! Type ` character at the end of any code you want to complete, save the file and see the result.
 
 **License**: Public domain
+
+**Examples**: https://github.com/llvm-mirror/clang/tree/release_37/test/CodeCompletion
 
 **Reference**: http://clang.llvm.org/doxygen/group__CINDEX__CODE__COMPLET.html (Function Documentation)
