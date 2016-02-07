@@ -68,16 +68,16 @@ cut -d '>' -f1 | \
 cut -d ',' -f1 | \
 cut -d ' ' -f1 | rev)
 column=$((${#body} - ${#tail} + 1))
-clang_output=$(clang "${@}" -fcolor-diagnostics -fsyntax-only -Xclang -code-completion-macros -Xclang -code-completion-patterns -Xclang -code-completion-brief-comments -Xclang -code-completion-at="${1}":${line}:${column})
-fmt="s_#\]_#\] _1; s_\[#_${return_color}_g; s_#\]_${nil}_g; s_<#_${argument_color}_g; s_#>_${nil}_g; s_{#, _,${default_argument_color} \$_g; s_#}_${nil}_g"
-clang_output=$(echo "${clang_output}" | sed -z "s_\n__g; s_OVERLOAD: _\nOVERLOAD: _g; s_COMPLETION: _\nCOMPLETION: _g")
-complete=$(echo "${clang_output}" | sed "/^OVERLOAD: /d; /^COMPLETION: Pattern : /d; /^$/d")
-overload=$(echo "${clang_output}" | grep "^OVERLOAD: ")
-complete=$(echo "${clang_output}" | grep "^COMPLETION: ${tail}")
-patterns=$(echo "${clang_output}" | grep "^COMPLETION: Pattern : ")
-overload=$(echo "${overload}" | sed "${fmt}")
-complete=$(echo "${complete}" | sed "${fmt}")
-patterns=$(echo "${patterns}" | sed "${fmt}")
+format="s_#\]_#\] _1; s_\[#_${return_color}_g; s_#\]_${nil}_g; s_<#_${argument_color}_g; s_#>_${nil}_g; s_{#, _,${default_argument_color} \$_g; s_#}_${nil}_g"
+clangout=$(clang "${@}" -fcolor-diagnostics -fsyntax-only -Xclang -code-completion-macros -Xclang -code-completion-patterns -Xclang -code-completion-brief-comments -Xclang -code-completion-at="${1}":${line}:${column})
+clangout=$(echo "${clangout}" | sed -z "s_\n__g; s_OVERLOAD: _\nOVERLOAD: _g; s_COMPLETION: _\nCOMPLETION: _g")
+complete=$(echo "${clangout}" | sed "/^OVERLOAD: /d; /^COMPLETION: Pattern : /d; /^$/d")
+overload=$(echo "${clangout}" | grep "^OVERLOAD: ")
+complete=$(echo "${clangout}" | grep "^COMPLETION: ${tail}")
+patterns=$(echo "${clangout}" | grep "^COMPLETION: Pattern : ")
+overload=$(echo "${overload}" | sed "${format}")
+complete=$(echo "${complete}" | sed "${format}")
+patterns=$(echo "${patterns}" | sed "${format}")
 echo
 if [[ ! -z ${overload} ]]; then echo -e "${overload}"; echo; fi
 if [[ ! -z ${complete} ]]; then echo -e "${complete}"; echo; fi
