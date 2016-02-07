@@ -1,7 +1,9 @@
 poor man's clang autocomplete
 =============================
 
-For any text editor out there. For C and C++.
+For any text editor out there. Supports both C and C++.
+
+<img src="https://i.imgur.com/Go6E0f0.gif" width="90%">
 
 **Basic usage**:
 
