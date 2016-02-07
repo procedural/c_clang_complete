@@ -40,9 +40,8 @@ default_argument_color=${light_red}
 IFS='%'
 line=$(grep -n ${find} "${1}" | grep -o "^[0-9]*")
 if [[ -z ${line} ]]; then exit 1; fi
-str_line=$(sed "${line}q; d" "${1}")
-str_line_half=$(echo "${str_line}" | cut -d ${find} -f1)
-str_tail=$(echo "${str_line_half}" | rev | \
+body=$(sed "${line}q; d" "${1}" | cut -d ${find} -f1)
+tail=$(echo "${body}" | rev | \
 cut -d '{' -f1 | \
 cut -d '}' -f1 | \
 cut -d '[' -f1 | \
@@ -68,13 +67,13 @@ cut -d '<' -f1 | \
 cut -d '>' -f1 | \
 cut -d ',' -f1 | \
 cut -d ' ' -f1 | rev)
-column=$((${#str_line_half} - ${#str_tail} + 1))
+column=$((${#body} - ${#tail} + 1))
 clang_output=$(clang "${@}" -fcolor-diagnostics -fsyntax-only -Xclang -code-completion-macros -Xclang -code-completion-patterns -Xclang -code-completion-brief-comments -Xclang -code-completion-at="${1}":${line}:${column})
 fmt="s_#\]_#\] _1; s_\[#_${return_color}_g; s_#\]_${nil}_g; s_<#_${argument_color}_g; s_#>_${nil}_g; s_{#, _,${default_argument_color} \$_g; s_#}_${nil}_g"
 clang_output=$(echo "${clang_output}" | sed -z "s_\n__g; s_OVERLOAD: _\nOVERLOAD: _g; s_COMPLETION: _\nCOMPLETION: _g")
 complete=$(echo "${clang_output}" | sed "/^OVERLOAD: /d; /^COMPLETION: Pattern : /d; /^$/d")
 overload=$(echo "${clang_output}" | grep "^OVERLOAD: ")
-complete=$(echo "${clang_output}" | grep "^COMPLETION: ${str_tail}")
+complete=$(echo "${clang_output}" | grep "^COMPLETION: ${tail}")
 patterns=$(echo "${clang_output}" | grep "^COMPLETION: Pattern : ")
 overload=$(echo "${overload}" | sed "${fmt}")
 complete=$(echo "${complete}" | sed "${fmt}")
