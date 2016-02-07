@@ -4,7 +4,6 @@
 # COLORS #
 #========#
 
-nil="\\\033[0m"
 red="\\\033[31m"
 gray="\\\033[1;30m"
 blue="\\\033[34m"
@@ -16,6 +15,7 @@ green="\\\033[32m"
 brown="\\\033[33m"
 yellow="\\\033[1;33m"
 purple="\\\033[35m"
+normal="\\\033[0m"
 bg_black="\\\033[40m"
 bg_white="\\\033[47m"
 light_red="\\\033[1;31m"
@@ -68,7 +68,7 @@ cut -d '>' -f1 | \
 cut -d ',' -f1 | \
 cut -d ' ' -f1 | rev)
 column=$((${#body} - ${#tail} + 1))
-format="s_#\]_#\] _1; s_\[#_${return_color}_g; s_#\]_${nil}_g; s_<#_${argument_color}_g; s_#>_${nil}_g; s_{#, _,${default_argument_color} \$_g; s_#}_${nil}_g"
+format="s_#\]_#\] _1; s_\[#_${return_color}_g; s_#\]_${normal}_g; s_<#_${argument_color}_g; s_#>_${normal}_g; s_{#, _,${default_argument_color} \$_g; s_#}_${normal}_g"
 clangout=$(clang "${@}" -fcolor-diagnostics -fsyntax-only -Xclang -code-completion-macros -Xclang -code-completion-patterns -Xclang -code-completion-brief-comments -Xclang -code-completion-at="${1}":${line}:${column})
 clangout=$(echo "${clangout}" | sed -z "s_\n__g; s_OVERLOAD: _\nOVERLOAD: _g; s_COMPLETION: _\nCOMPLETION: _g")
 complete=$(echo "${clangout}" | sed "/^OVERLOAD: /d; /^COMPLETION: Pattern : /d; /^$/d")
