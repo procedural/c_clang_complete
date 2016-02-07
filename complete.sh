@@ -76,8 +76,8 @@ complete=$(echo "${clang_output}" | sed "/^OVERLOAD: /d; /^COMPLETION: Pattern :
 overload=$(echo "${clang_output}" | grep "^OVERLOAD: ")
 complete=$(echo "${clang_output}" | grep "^COMPLETION: ${str_tail}")
 patterns=$(echo "${clang_output}" | grep "^COMPLETION: Pattern : ")
-complete=$(echo "${complete}" | sed "${fmt}")
 overload=$(echo "${overload}" | sed "${fmt}")
+complete=$(echo "${complete}" | sed "${fmt}")
 patterns=$(echo "${patterns}" | sed "${fmt}")
 echo
 if [[ ! -z ${overload} ]]; then echo -e "${overload}"; echo; fi
