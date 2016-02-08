@@ -69,11 +69,11 @@ cut -d ',' -f1 | \
 cut -d ' ' -f1 | rev)
 column=$((${#body} - ${#tail} + 1))
 format="s_#\]_#\] _1; s_\[#_${return_color}_g; s_#\]_${normal}_g; s_<#_${argument_color}_g; s_#>_${normal}_g; s_{#, _,${default_argument_color} \$_g; s_#}_${normal}_g"
-clangout=$(clang "${@}" -fcolor-diagnostics -fsyntax-only -Xclang -code-completion-macros -Xclang -code-completion-patterns -Xclang -code-completion-brief-comments -Xclang -code-completion-at="${1}":${line}:${column})
-clangout=$(echo "${clangout}" | sed -z "s_\n__g; s_OVERLOAD: _\n${normal}OVERLOAD: _g; s_COMPLETION: _\n${normal}COMPLETION: _g" | sed "/^$/d; ${format}")
-overload=$(echo "${clangout}" | grep "OVERLOAD: ")
-complete=$(echo "${clangout}" | grep "COMPLETION: ${tail}")
-patterns=$(echo "${clangout}" | grep "COMPLETION: Pattern : ")
+clang=$(clang "${@}" -fcolor-diagnostics -fsyntax-only -Xclang -code-completion-macros -Xclang -code-completion-patterns -Xclang -code-completion-brief-comments -Xclang -code-completion-at="${1}":${line}:${column} \
+| sed -z "s_\n__g; s_OVERLOAD: _\n${normal}OVERLOAD: _g; s_COMPLETION: _\n${normal}COMPLETION: _g" | sed "${format}; /^$/d")
+overload=$(echo "${clang}" | grep "OVERLOAD: ")
+complete=$(echo "${clang}" | grep "COMPLETION: ${tail}")
+patterns=$(echo "${clang}" | grep "COMPLETION: Pattern : ")
 if [[ ! -z ${overload} ]]; then echo -e "\n${overload}"; fi
 if [[ ! -z ${complete} ]]; then echo -e "\n${complete}"; fi
 if [[ ! -z ${patterns} ]]; then echo -e "\n${patterns}"; fi
