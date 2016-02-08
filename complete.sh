@@ -70,15 +70,10 @@ cut -d ' ' -f1 | rev)
 column=$((${#body} - ${#tail} + 1))
 format="s_#\]_#\] _1; s_\[#_${return_color}_g; s_#\]_${normal}_g; s_<#_${argument_color}_g; s_#>_${normal}_g; s_{#, _,${default_argument_color} \$_g; s_#}_${normal}_g"
 clangout=$(clang "${@}" -fcolor-diagnostics -fsyntax-only -Xclang -code-completion-macros -Xclang -code-completion-patterns -Xclang -code-completion-brief-comments -Xclang -code-completion-at="${1}":${line}:${column})
-clangout=$(echo "${clangout}" | sed -z "s_\n__g; s_OVERLOAD: _\nOVERLOAD: _g; s_COMPLETION: _\nCOMPLETION: _g")
-complete=$(echo "${clangout}" | sed "/^OVERLOAD: /d; /^COMPLETION: Pattern : /d; /^$/d")
-overload=$(echo "${clangout}" | grep "^OVERLOAD: ")
-complete=$(echo "${clangout}" | grep "^COMPLETION: ${tail}")
-patterns=$(echo "${clangout}" | grep "^COMPLETION: Pattern : ")
-overload=$(echo "${overload}" | sed "${format}")
-complete=$(echo "${complete}" | sed "${format}")
-patterns=$(echo "${patterns}" | sed "${format}")
-echo
-if [[ ! -z ${overload} ]]; then echo -e "${overload}"; echo; fi
-if [[ ! -z ${complete} ]]; then echo -e "${complete}"; echo; fi
-if [[ ! -z ${patterns} ]]; then echo -e "${patterns}"; echo; fi
+clangout=$(echo "${clangout}" | sed -z "s_\n__g; s_OVERLOAD: _\n${normal}OVERLOAD: _g; s_COMPLETION: _\n${normal}COMPLETION: _g" | sed "/^$/d; ${format}")
+overload=$(echo "${clangout}" | grep "OVERLOAD: ")
+complete=$(echo "${clangout}" | grep "COMPLETION: ${tail}")
+patterns=$(echo "${clangout}" | grep "COMPLETION: Pattern : ")
+if [[ ! -z ${overload} ]]; then echo -e "\n${overload}"; fi
+if [[ ! -z ${complete} ]]; then echo -e "\n${complete}"; fi
+if [[ ! -z ${patterns} ]]; then echo -e "\n${patterns}"; fi
