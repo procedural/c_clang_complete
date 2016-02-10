@@ -31,7 +31,7 @@ watch -cn 0.1 "./complete.sh main.c"
 Or, alternatively:
 
 ```bash
-mkdir -p .c && watch -cn 0.1 'T1=$(stat -c %Z main.c); if [ ! -f .c/${T1} ]; then rm .c/*; ./complete.sh main.c > .c/${T1} 2>&1; fi; cat .c/*' && rm -rf .c
+mkdir .complete && watch -cn 0.1 "./complete-on-change.sh main.c" && rm -rf .complete
 ```
 
 You should see:
