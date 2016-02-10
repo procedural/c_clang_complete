@@ -28,10 +28,10 @@ Now open a terminal window and type:
 watch -cn 0.1 "./complete.sh main.c"
 ```
 
-Or alternatively:
+Or, alternatively:
 
 ```bash
-watch -cn 0.1 'T1=$(stat -c %Z main.c); if [ "${T1}" != "${T2}" ]; then ./complete.sh main.c; T2=${T1}; fi'
+mkdir -p .c && watch -cn 0.1 'T1=$(stat -c %Z main.c); if [ ! -f .c/${T1} ]; then rm .c/*; ./complete.sh main.c > .c/${T1}; fi; cat .c/*'
 ```
 
 You should see:
