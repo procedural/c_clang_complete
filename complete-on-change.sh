@@ -11,9 +11,11 @@ temp_folder=".complete"
 #================#
 
 dir="$(dirname -- "$(readlink -fn -- "${0}")")"
+pwd="$(dirname -- "$(readlink -fn -- "${1}")")"
+tmp="${pwd}/${temp_folder}"
 id=$(stat -c %Z "${1}")
-if [[ ! -f "${temp_folder}"/${id} ]]
+if [[ ! -f "${tmp}"/"${id}" ]]
 then
- rm "${temp_folder}"/* && "${dir}"/complete.sh "${@}" > "${temp_folder}"/${id} 2>&1
+  rm -f "${tmp}"/* && "${dir}"/complete.sh "${@}" > "${tmp}"/"${id}" 2>&1
 fi
-cat "${temp_folder}"/*
+cat "${tmp}"/*
