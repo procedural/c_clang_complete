@@ -30,7 +30,7 @@ watch -cn 0.1 "./complete.sh main.c"
 
 Or alternatively:
 
-```
+```bash
 watch -cn 0.1 'T1=$(stat -c %Z main.c); if [ "${T1}" != "${T2}" ]; then ./complete.sh main.c; T2=${T1}; fi'
 ```
 
