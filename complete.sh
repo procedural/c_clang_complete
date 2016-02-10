@@ -38,6 +38,7 @@ default_argument_color=${light_red}
 #================#
 
 IFS='%'
+<<<<<<< HEAD
 while true
 do
   ATIME=$(stat -c %Z "${1}")
@@ -87,3 +88,44 @@ do
   fi
   sleep 0.1
 done
+=======
+line=$(grep -n ${find} "${1}" | grep -o "^[0-9]*")
+if [[ -z ${line} ]]; then exit 1; fi
+body=$(sed "${line}q; d" "${1}" | cut -d ${find} -f1)
+tail=$(echo "${body}" | rev | \
+cut -d '{' -f1 | \
+cut -d '}' -f1 | \
+cut -d '[' -f1 | \
+cut -d ']' -f1 | \
+cut -d '#' -f1 | \
+cut -d '(' -f1 | \
+cut -d ')' -f1 | \
+cut -d ';' -f1 | \
+cut -d ':' -f1 | \
+cut -d '.' -f1 | \
+cut -d '+' -f1 | \
+cut -d '-' -f1 | \
+cut -d '*' -f1 | \
+cut -d '/' -f1 | \
+cut -d '%' -f1 | \
+cut -d '^' -f1 | \
+cut -d '&' -f1 | \
+cut -d '|' -f1 | \
+cut -d '~' -f1 | \
+cut -d '!' -f1 | \
+cut -d '=' -f1 | \
+cut -d '<' -f1 | \
+cut -d '>' -f1 | \
+cut -d ',' -f1 | \
+cut -d ' ' -f1 | rev)
+column=$((${#body} - ${#tail} + 1))
+format="s_#\]_#\] _1; s_\[#_${return_color}_g; s_#\]_${normal}_g; s_<#_${argument_color}_g; s_#>_${normal}_g; s_{#, _,${default_argument_color} \$_g; s_#}_${normal}_g"
+clang=$(clang "${@}" -fcolor-diagnostics -fsyntax-only -Xclang -code-completion-macros -Xclang -code-completion-patterns -Xclang -code-completion-brief-comments -Xclang -code-completion-at="${1}":${line}:${column} \
+| sed -z "s_\n__g; s_OVERLOAD: _\n${normal}OVERLOAD: _g; s_COMPLETION: _\n${normal}COMPLETION: _g" | sed "${format}; /^$/d")
+overload=$(echo "${clang}" | grep "OVERLOAD: ")
+complete=$(echo "${clang}" | grep "COMPLETION: ${tail}")
+patterns=$(echo "${clang}" | grep "COMPLETION: Pattern : "| grep "${tail}")
+if [[ ! -z ${overload} ]]; then echo -e "\n${overload}"; fi
+if [[ ! -z ${complete} ]]; then echo -e "\n${complete}"; fi
+if [[ ! -z ${patterns} ]]; then echo -e "\n${patterns}"; fi
+>>>>>>> parent of cf239a8... Exclude duplicate patterns from complete
