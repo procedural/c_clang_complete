@@ -28,6 +28,12 @@ Now open a terminal window and type:
 watch -cn 0.1 "./complete.sh main.c"
 ```
 
+Or alternatively:
+
+```
+watch -cn 0.1 'T1=$(stat -c %Z main.c); if [ "${T1}" != "${T2}" ]; then ./complete.sh main.c; T2=${T1}; fi'
+```
+
 You should see:
 
 ```c
