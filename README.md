@@ -25,7 +25,7 @@ Save the file.
 Now open a terminal window and type:
 
 ```bash
-watch -cn 0.1 "./complete.sh main.c"
+./complete.sh main.c
 ```
 
 You should see:
