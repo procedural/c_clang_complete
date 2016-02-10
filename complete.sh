@@ -80,9 +80,9 @@ do
     patterns=$(echo "${clang}" | grep "COMPLETION: Pattern : "   | grep "${tail}")
     complete=$(echo "${clang}" | sed "/COMPLETION: Pattern : /d" | grep "COMPLETION: ${tail}")
     overload=$(echo "${clang}" | grep "OVERLOAD: ")
-    if [[ ! -z ${patterns} ]]; then echo -e "\n${patterns}" | tac; fi
-    if [[ ! -z ${complete} ]]; then echo -e "\n${complete}" | tac; fi
-    if [[ ! -z ${overload} ]]; then echo -e "\n${overload}" | tac; fi
+    if [[ ! -z ${patterns} ]]; then echo -e "${patterns}\n" | tac; fi
+    if [[ ! -z ${complete} ]]; then echo -e "${complete}\n" | tac; fi
+    if [[ ! -z ${overload} ]]; then echo -e "${overload}\n" | tac; fi
     LTIME=${ATIME}
   fi
   sleep 0.1
