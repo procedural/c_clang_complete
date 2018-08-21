@@ -25,13 +25,7 @@ Save the file.
 Now open a terminal window and type:
 
 ```bash
-watch -cn 0.1 -x ./complete.sh main.c
-```
-
-Or, alternatively:
-
-```bash
-mkdir .complete && watch -cn 0.1 -x ./complete-on-change.sh main.c && rm -rf .complete
+./complete-on-change.sh main.c
 ```
 
 You should see:
