@@ -22,7 +22,7 @@ int main()
 
 Save the file.
 
-Now open a terminal window and type:
+Now open a terminal window and enter:
 
 ```bash
 ./complete-on-change.sh main.c
