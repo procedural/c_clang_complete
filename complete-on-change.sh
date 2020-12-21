@@ -8,7 +8,7 @@ do
   if [ $curr_stat -ne $prev_stat ]
   then
     clear && clear
-    ./complete.sh "${1}"
+    /c/Clang/c_clang_complete/complete.sh "${1}"
     prev_stat=$curr_stat
   fi
 done
